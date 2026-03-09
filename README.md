@@ -73,6 +73,35 @@ Matched 34 out of 98 videos
 
 Results saved to `filtered_videos_YYYY-MM-DD_HHMMSS.csv` in the root directory
 
+## Keyword Matching Algorithm
+
+The notebook uses an intelligent two-tier matching system to avoid false positives:
+
+### Matching Rules
+
+**Priority order (checked in this sequence):**
+1. **YouTube Tags** - Most reliable (explicitly set by creators)
+2. **Video Title** - Usually accurate
+3. **Description** - Only for specific long keywords (see below)
+
+**Keyword Tiers:**
+
+- **STRICT Keywords** (ambiguous/generic):
+  - List: AI, tech, virus, disease, pandemic, science, research, study, health, medicine, earth, space, environment, policy, conflict, politics, election
+  - Matching: Tags or Title ONLY (never description)
+  - Reason: These words have multiple meanings and cause false positives in descriptions (e.g., "environment" in "unpredictable environment")
+
+- **SPECIFIC Keywords** (>10 characters):
+  - List: artificial intelligence, machine learning, climate change, renewable energy
+  - Matching: Tags, Title, OR Description
+  - Reason: Long, unambiguous phrases are safe to match in descriptions
+
+- **Regular Keywords** (≤10 chars, non-strict):
+  - Matching: Tags or Title only (not description)
+  - Reason: Short words need explicit context
+
+**Example:** The word "environment" won't match a video about airstrikes just because the description mentions "unpredictable environment" (non-environmental context).
+
 ## Keywords Included
 
 ### Categories
@@ -83,8 +112,9 @@ Results saved to `filtered_videos_YYYY-MM-DD_HHMMSS.csv` in the root directory
 - **Space & Astronomy**: space, NASA, astronomy
 - **Science & Research**: science, research, study, scientist, biology, physics, chemistry
 - **Technology & Innovation**: technology, tech, innovation
+- **Politics & Government**: politics, government, policy, election, president, congress, senate, war, conflict, vote, voting
 
-**Total: 29 keywords**
+**Total: 41 keywords**
 
 ## API Rate Limiting
 
